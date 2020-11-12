@@ -9,23 +9,45 @@ function App() {
       .then((response) => response.json())
 
       .then((data) => setTodoList(data));
-    // .then(data => setPost( data ));
   }, []);
 
-  // const ans = [...todolist[0], ...todolist[1]];
+  const handleClick = (e, i) => {
+    setTodoList([
+      ...todolist.slice(0, i),
+      { ...e, completed: true },
+      ...todolist.slice(i + 1),
+    ]);
+    console.log(todolist);
+  };
 
-  console.log(todolist);
+  const handleSubmit = (ele) => {
+    ele.preventDefault();
+
+    
+  }
+
+  const handleChange = (f) => {
+    console.log(f);
+  }
 
   return (
     <div>
       <h1>Todo List</h1>
-      {todolist.map((e) => {
+      <form>
+        <input type="text" value="" onChange={() => handleChange()}/>
+        <input type="submit" value="submit" onClick={()=>handleSubmit() }/>
+      </form>
+      {todolist.map((e, i) => {
         return (
           <div>
-            <p className={e.completed === true ?
-              "selected" :
-              "not-selected"} >{e.title}{e.completed === true ?<button>Completed</button>:<button>Not Completed</button>}</p>
-
+            <p className={e.completed === true ? "selected" : "not-selected"}>
+              {e.title}
+              {e.completed === true ? (
+                <button>Completed</button>
+              ) : (
+                <button onClick={() => handleClick(e, i)}>Not Completed</button>
+              )}
+            </p>
           </div>
         );
       })}
