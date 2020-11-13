@@ -3,6 +3,7 @@ import "./App.css";
 
 function App() {
   const [todolist, setTodoList] = useState([]);
+  const [line, setLine] = useState(" ");
 
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/todos`)
@@ -20,22 +21,32 @@ function App() {
     console.log(todolist);
   };
 
-  const handleSubmit = (ele) => {
-    ele.preventDefault();
+  
 
+  const handleChange = (e) => {
+    setLine(e.target.value);
     
   }
-
-  const handleChange = (f) => {
-    console.log(f);
+  // data.forEach(el => {
+  //   el.skill = el.skill.filter(s => s.message.toLowerCase().includes(search))
+  // });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setTodoList(todolist.filter(el => el.title.includes(line)));
   }
 
+  const handleAdd = (e) => {
+    e.preventDefault();
+    setTodoList([...todolist, { title: line }])
+  }
   return (
     <div>
       <h1>Todo List</h1>
-      <form>
-        <input type="text" value="" onChange={() => handleChange()}/>
-        <input type="submit" value="submit" onClick={()=>handleSubmit() }/>
+      <form className="form">
+        <label>Search</label>
+        <input type="text" name="title" value={line} onChange={handleChange} />
+        <input type="submit" value="Search" onClick={handleSubmit} />
+        <input type="submit" value="Add" onClick={handleAdd}/>
       </form>
       {todolist.map((e, i) => {
         return (
